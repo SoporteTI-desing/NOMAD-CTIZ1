@@ -1,0 +1,65 @@
+
+:root{
+  --azul:#23313b;
+  --azul-2:#355062;
+  --gris:#e9eef2;
+  --borde:#cfd8df;
+  --texto:#1b2430;
+}
+*{box-sizing:border-box}
+body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#fff;color:var(--texto);margin:0}
+.header{background:linear-gradient(180deg,#eaf3f8 0,#fff 60%);padding:20px 24px 8px;border-bottom:1px solid var(--borde)}
+.logo{height:56px}
+.empresa{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center}
+.linea{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.linea.derecha{justify-self:end}
+.linea.fechas input{width:160px}
+.tel{font-weight:700;margin-left:8px}
+.datos{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding:14px 24px;border-bottom:1px solid var(--borde);background:#f8fbfe}
+.datos label,.linea label{font-size:12px;color:#5b6b7a}
+.datos input,.datos select,.linea select,.linea input{
+  width:100%;padding:10px 12px;border:1.5px solid var(--borde);border-radius:8px;background:#fff;
+  outline:none;transition:border .2s ease}
+.datos input:focus,.datos select:focus,.linea select:focus{border-color:var(--azul-2)}
+section{padding:18px 24px}
+h2{color:var(--azul);margin:0 0 10px 0}
+.fila{display:flex;gap:10px;align-items:center;margin-bottom:10px}
+button{padding:10px 14px;border-radius:10px;border:1px solid var(--azul-2);background:var(--azul-2);color:#fff;font-weight:600;cursor:pointer}
+button:hover{filter:brightness(1.05)}
+table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--borde)}
+th,td{padding:10px;border-bottom:1px solid var(--borde);text-align:left}
+td:last-child, th:last-child{text-align:right}
+.btn-eliminar{background:#fff;color:#b3261e;border:1px solid #b3261e}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:10px;margin-bottom:10px}
+.grid>div{background:#f6f9fb;border:1px solid var(--borde);padding:12px;border-radius:10px}
+.grid .total{background:#e9f4ff;border-color:#bcd8ff}
+.disclaimer{font-size:12px;color:#5f6d7a}
+.deposito{border:1px dashed var(--borde);border-radius:10px;padding:12px;background:#fbfeff}
+
+
+.footer-code {
+  margin-top: 20px;
+  text-align: right;
+  font-size: 12px;
+  color: #003366;
+  font-weight: bold;
+}
+
+.titulo-cotizador {
+  font-size: 20px;
+  font-weight: bold;
+  color: #003366;
+  margin-bottom: 5px;
+}
+
+
+.folio{ margin-left:12px; font-weight:600; background:#eef7ff; padding:2px 6px; border-radius:6px; }
+a.wa{ margin-left:6px; text-decoration:none; font-size:1.1em; }
+.qr-box{ margin:10px 0; display:flex; justify-content:flex-end; }
+.qr-box img{ width:150px; height:auto; }
+
+.wa-icon {
+  height: 20px;
+  width: 20px;
+  vertical-align: middle;
+}

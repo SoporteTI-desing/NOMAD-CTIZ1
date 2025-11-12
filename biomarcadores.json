@@ -1,0 +1,122 @@
+{
+  "gestion_nomad": [
+    {
+      "nombre": "Biomarcador PDL 1",
+      "precio": 2800.0
+    },
+    {
+      "nombre": "Biomarcador HRD",
+      "precio": 5180.0
+    },
+    {
+      "nombre": "Biomarcador MMR",
+      "precio": 5600.0
+    },
+    {
+      "nombre": "Biomarcador PDY",
+      "precio": 5180.0
+    },
+    {
+      "nombre": "Biomarcador HER 2",
+      "precio": 3340.0
+    },
+    {
+      "nombre": "Biomarcador HER2 + FISH",
+      "precio": 6440.0
+    },
+    {
+      "nombre": "Biomarcador FOLR1",
+      "precio": 3340.0
+    }
+  ],
+  "gestion_comercial": [
+    {
+      "nombre": "Biomarcador PDL 1",
+      "precio": 2800.0
+    },
+    {
+      "nombre": "Biomarcador HRD",
+      "precio": 5180.0
+    },
+    {
+      "nombre": "Biomarcador MMR",
+      "precio": 5600.0
+    },
+    {
+      "nombre": "Biomarcador PDY",
+      "precio": 5180.0
+    },
+    {
+      "nombre": "Biomarcador HER 2",
+      "precio": 3340.0
+    },
+    {
+      "nombre": "Biomarcador HER2 + FISH",
+      "precio": 6440.0
+    },
+    {
+      "nombre": "Biomarcador FOLR1",
+      "precio": 3340.0
+    }
+  ],
+  "gnp": [
+    {
+      "nombre": "Biomarcador PDL 1",
+      "precio": 2800.0
+    },
+    {
+      "nombre": "Biomarcador HRD",
+      "precio": 5180.0
+    },
+    {
+      "nombre": "Biomarcador MMR",
+      "precio": 5600.0
+    },
+    {
+      "nombre": "Biomarcador PDY",
+      "precio": 5180.0
+    },
+    {
+      "nombre": "Biomarcador HER 2",
+      "precio": 3340.0
+    },
+    {
+      "nombre": "Biomarcador HER2 + FISH",
+      "precio": 6440.0
+    },
+    {
+      "nombre": "Biomarcador FOLR1",
+      "precio": 3340.0
+    }
+  ],
+  "dra_genoveva": [
+    {
+      "nombre": "Biomarcador PDL 1",
+      "precio": 2800.0
+    },
+    {
+      "nombre": "Biomarcador HRD",
+      "precio": 5180.0
+    },
+    {
+      "nombre": "Biomarcador MMR",
+      "precio": 5600.0
+    },
+    {
+      "nombre": "Biomarcador PDY",
+      "precio": 5180.0
+    },
+    {
+      "nombre": "Biomarcador HER 2",
+      "precio": 3340.0
+    },
+    {
+      "nombre": "Biomarcador HER2 + FISH",
+      "precio": 6440.0
+    },
+    {
+      "nombre": "Biomarcador FOLR1",
+      "precio": 3340.0
+    }
+  ]
+}

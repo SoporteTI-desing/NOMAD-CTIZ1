@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cotización - Nomad Genetics</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <style>
+  @media print {
+    .linea.derecha.fechas, #listado { display:none !important; }
+    .datos { display: none !important; } /* Oculta filtros en PDF */
+  }
+  </style>
+  
+
+  <style>
+  @media print {
+    .linea.derecha.fechas, #listado { display:none !important; }
+    .datos { display: none !important; } /* Oculta filtros */
+    .fechas-pdf { display: block !important; margin-bottom: 10px; }
+  }
+  </style>
+  
+
+  <style>
+  @media print {
+    .linea.derecha.fechas, #listado { display:none !important; }
+    .datos, #listado { display: none !important; }
+  }
+  </style>
+  
+
+  <style>
+  .fechas-pdf {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    padding: 8px 12px;
+  }
+  @media print {
+    .fechas-pdf {
+      display: block !important;
+      margin-top: 20px !important;
+      margin-bottom: 20px !important;
+      padding-left: 15px !important;
+    }
+  }
+  </style>
+  
+
+  <style>
+  .overlay {
+    position: fixed;
+    top:0; left:0; right:0; bottom:0;
+    background: rgba(0,0,0,0.7);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:9999;
+  }
+  .login-box {
+    background:#fff;
+    padding:20px;
+    border-radius:12px;
+    width:320px;
+    text-align:center;
+    box-shadow:0 0 10px rgba(0,0,0,0.5);
+  }
+  .login-box input {
+    width:90%;
+    padding:10px;
+    margin:8px 0;
+    border:1px solid #ccc;
+    border-radius:6px;
+  }
+  .login-box button {
+    margin-top:12px;
+    padding:10px 20px;
+    background:#004080;
+    color:white;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+  }
+  </style>
+
+</head>
+<body>
+<div id="folioBadge" style="position:fixed; right:16px; top:16px; background:#fff; border:1px solid #ddd; padding:6px 10px; border-radius:8px; font-size:13px; z-index:5000;">
+  <strong>Folio:</strong> <span id="folioText">—</span>
+</div>
+
+</div>
+
+  <main id="cotizador">
+    <header class="header">
+      <div class="logo-wrap">
+        <div class="titulo-cotizador">Cotización Nomad</div>
+    <img src="logosNomad-08.png" alt="Nomad Genetics" class="logo" />
+      </div>
+      <div class="empresa">
+        <div class="linea">
+          <label>Dirección de la empresa</label>
+          <div class="form-control-plaintext">La Morena 811, Narvarte Poniente, Benito Juárez, 03020 Ciudad de México, CDMX</div>
+<div class="form-control-plaintext"></div>
+<input type="hidden" id="direccion" value="La Morena 811, Narvarte Poniente, Benito Juárez, 03020 Ciudad de México, CDMX">
+          <span id="telefono" class="tel"></span>
+<span id="folioCotizacion" class="folio"></span>
+<a id="waLink" class="wa" href="#" target="_blank"><img src="whatsapp.png" alt="WhatsApp" class="wa-icon" /></a>
+        </div>
+
+        <div class="linea derecha">
+          <label>Listado</label>
+          <select id="listado">
+            <option value="gestion_nomad">PRECIO GESTIÓN DIRECTA NOMAD</option>
+            <option value="gestion_comercial">PRECIO GESTIÓN COMERCIAL</option>
+            <option value="gnp">PRECIO GNP</option>
+            <option value="dra_genoveva">DRA. GENOVEVA</option>
+          </select>
+        </div>
+
+        <div class="linea derecha fechas">
+          <label>Fecha de emisión</label>
+          <input type="date" id="fechaEmision" />
+          <label>Presupuesto válido hasta</label>
+          <input type="date" id="fechaValidez" />
+          <label>Realizado por</label>
+          <input type="text" id="realizadoPor" placeholder="COMERCIAL" />
+        </div>
+      </div>
+    </header>
+
+    
+    <div class="fechas-pdf">
+      <label>Fecha de emisión:</label> <span id="rFechaEmision"></span><br>
+      <label>Presupuesto válido hasta:</label> <span id="rFechaValidez"></span><br>
+      <label>Realizado por:</label> <span id="rRealizadoPor"></span>
+    </div>
+    
+<section class="datos">
+      <div>
+        <label>Nombre del paciente</label>
+        <input id="paciente" placeholder="Nombre del paciente" />
+      </div>
+      <div>
+        <label>Buscar médico</label>
+        <input id="buscarMedico" placeholder="Escribe nombre del médico..." />
+        <select id="medico"></select>
+      </div>
+      <div>
+        <label>Buscar aseguradora</label>
+        <input id="buscarAseg" placeholder="Escribe aseguradora..." />
+        <select id="aseguradora"></select>
+      </div>
+      <div>
+        <label>KAM</label>
+        <input id="kam" placeholder="Se llena automático" readonly />
+        <input id="buscarKam" placeholder="Buscar por KAM..." />
+      </div>
+      </section>
+
+<section id="resumenSection">
+  <h2>Resumen</h2>
+  <table id="tablaResumen">
+    <thead>
+      <tr><th>Paciente</th><th>Médico</th><th>Aseguradora</th><th>KAM</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td id="rPaciente"></td>
+        <td id="rMedico"></td>
+        <td id="rAseguradora"></td>
+        <td id="rKam"></td>
+        </tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>Pruebas</h2>
+      <div class="fila">
+        <input type="text" id="buscarPrueba" placeholder="Buscar prueba..." />
+        <select id="ordenPruebas">
+          <option value="nombre">Ordenar por: A–Z</option>
+          <option value="precio">Ordenar por: Precio (desc)</option>
+        </select>
+      </div>
+      <div class="fila">
+        <select id="selPrueba"></select>
+        <input type="number" id="cantPrueba" min="1" value="1" />
+        <button id="addPrueba">Agregar</button>
+      </div>
+      
+  <div class="fila">
+    <label style="min-width:180px">Biomarcadores (opcional)</label>
+    <select id="selBiomarcador"></select>
+    <button id="addBiomarcador">Agregar biomarcador</button>
+  </div>
+<table id="tablaPruebas">
+        <thead>
+          <tr><th>Prueba</th><th>Cantidad</th><th>P. unitario</th><th>Subtotal</th><th></th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <section class="totales">
+      <div class="grid">
+        <div><span>Subtotal: </span><strong id="subtotal">$ 0.00</strong></div>
+        <div><span>IVA (16%): </span><strong id="iva">$ 0.00</strong></div>
+        <div class="total"><span>TOTAL: </span><strong id="total">$ 0.00</strong></div>
+      </div>
+      <p class="disclaimer">La presente cotización es válida por 15 días e incluye únicamente los conceptos señalados; cualquier servicio adicional será cotizado de manera independiente, el pago deberá realizarse antes de que se realice el envío y si es toma de muestra antes de la toma; el pacientes de aseguradora debe presentar su carta de autorización vigente y con el monto autorizado de existir una diferencia debe cubrirse junto con el coaseguro y/o deducible. En caso de cancelación el paciente deberá notificar con al menos 24 horas de anticipación. La presente cotización está sujeta a cambios de existir un cambio de prescripción por parte del médico.</p>
+      <div class="qr-box"><img src="QR_Nomad_Landing.png" alt="QR Nomad" /></div>
+      <section class="deposito">
+        <h3>Datos para depósito</h3>
+        <p>Beneficiario: <strong>NOMAD INNOVATIONS, S.A. de C.V.</strong></p>
+        <p>Cuenta: <strong>0242675280201</strong></p>
+        <p>Clabe interbancaria: <strong>030420900017142148</strong></p>
+        <p>Banco: <strong>Banbajio</strong></p>
+      </section>
+      <button id="btnPDF">Descargar PDF</button>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+<div class="footer-code">NOG-KAM-FOR-01</div>
+
+<!-- Overlay de Login -->
+<div id="overlay" style="
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;">
+  <div style="background: #fff; padding: 2rem; border-radius: 10px; width: 300px; text-align: center;">
+    <h2>Acceso</h2>
+    <input id="user" type="text" placeholder="Usuario" style="display:block; margin:10px auto; width:90%; padding:8px;" />
+    <input id="pass" type="password" placeholder="Contraseña" style="display:block; margin:10px auto; width:90%; padding:8px;" />
+    <button onclick="checkLogin()" style="margin-top:10px; padding:10px 20px; background:#0070f3; color:#fff; border:none; border-radius:5px; cursor:pointer;">Entrar</button>
+  </div>
+</div>
+
+<script>
+  // --- Login multi-usuario ---
+  const USERS = {
+    "nomad": "admin",
+    "admin": "1234",
+    "ventas": "5678"
+  };
+  function checkLogin() {
+    const u = document.getElementById("user").value.trim();
+    const p = document.getElementById("pass").value.trim();
+    if (USERS[u] && USERS[u] === p) {
+      localStorage.setItem("usuarioActual", u);
+      document.getElementById("overlay").style.display = "none";
+    } else {
+      alert("Usuario o contraseña incorrectos");
+    }
+  }
+</script>
+
+</body>
+</html>
