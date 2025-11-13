@@ -37,6 +37,46 @@ async function sendToSheet({folio, paciente, fecha, usuario}){
   } catch(e){ console.warn("Error enviando a Google Sheets:", e); }
 }
 
+
+
+// === Payload para guardar cotización NOMAD en Firestore ===
+function getCotizacionPayloadNomad(folio){
+  try{
+    const totalEl = document.getElementById('total');
+    const total = totalEl ? Number((totalEl.textContent || '').replace(/[^0-9.,]/g, '').replace(',', '.')) || 0 : 0;
+
+    const pruebas = Array.from(
+      document.querySelectorAll('#tablaPruebas tbody tr')
+    ).map(tr => {
+      const tds = tr.querySelectorAll('td');
+      return {
+        prueba:   (tds[0]?.textContent || '').trim(),
+        cantidad: Number((tds[1]?.textContent || '').replace(/[^0-9.,]/g, '').replace(',', '.')) || 0,
+        precioUnit: Number((tds[2]?.textContent || '').replace(/[^0-9.,]/g, '').replace(',', '.')) || 0,
+        subtotal: Number((tds[3]?.textContent || '').replace(/[^0-9.,]/g, '').replace(',', '.')) || 0
+      };
+    });
+
+    return {
+      folio: folio || '',
+      fechaEmision: document.getElementById('fechaEmision')?.value || '',
+      fechaValidez: document.getElementById('fechaValidez')?.value || '',
+      realizadoPor: document.getElementById('realizadoPor')?.value || '',
+      paciente: document.getElementById('paciente')?.value || '',
+      medico: document.getElementById('medico')?.value || '',
+      aseguradora: document.getElementById('aseguradora')?.value || '',
+      kam: document.getElementById('kam')?.value || '',
+      diagnostico: document.getElementById('diagnostico')?.value || '',
+      fechaProgramacion: document.getElementById('fechaProgramacion')?.value || '',
+      total,
+      pruebas
+    };
+  }catch(e){
+    console.warn('No se pudo construir el payload de cotización NOMAD', e);
+    return { folio: folio || '', error: String(e) };
+  }
+}
+
 // === Datos embebidos (sin fetch) ===
 const DATASETS = {"gestion_nomad":[{"nombre":"FoundationOne CDx","precio":95000.0},{"nombre":"FoundationOne Liquid CDx","precio":95000.0},{"nombre":"FoundationOne Heme","precio":116500.0},{"nombre":"Avenio Roche Tisssue","precio":48000.0},{"nombre":"Examen OncoIDX Complete ctDNA","precio":48000.0},{"nombre":"Guardant360 CDx","precio":80270.0},{"nombre":"Guardant360 CDx Expanded","precio":92000.0},{"nombre":"Guardant Health Reveal","precio":83950.0},{"nombre":"Tempus xF","precio":85344.83},{"nombre":"Tempus xF+","precio":85344.83},{"nombre":"Tempus xT","precio":85344.83},{"nombre":"Tempus xT + xR","precio":85344.83},{"nombre":"INVITAE Panel multicancer ","precio":20689.66},{"nombre":"INVITAE Common herditary Cancer","precio":20689.66},{"nombre":"INVITAE Hereditary Breast Cancer STAT Panel","precio":20689.66}],"gestion_comercial":[{"nombre":"FoundationOne CDx","precio":111744.0},{"nombre":"FoundationOne Liquid CDx","precio":111744.0},{"nombre":"FoundationOne Heme","precio":111744.0},{"nombre":"Avenio Roche Tisssue","precio":48000.0},{"nombre":"Examen OncoIDX Complete ctDNA","precio":48000.0},{"nombre":"Guardant360 CDx","precio":101325.0},{"nombre":"Guardant360 CDx Expanded","precio":101325.0},{"nombre":"Guardant Health Reveal","precio":101325.0},{"nombre":"Tempus xF","precio":100000.0},{"nombre":"Tempus xF+","precio":100000.0},{"nombre":"Tempus xT","precio":100000.0},{"nombre":"Tempus xT + xR","precio":100000.0},{"nombre":"INVITAE Panel multicancer ","precio":20689.66},{"nombre":"INVITAE Common herditary Cancer","precio":20689.66},{"nombre":"INVITAE Hereditary Breast Cancer STAT Panel","precio":20689.66}],"gnp":[{"nombre":"FoundationOne CDx","precio":83000.0},{"nombre":"FoundationOne Liquid CDx","precio":83000.0},{"nombre":"FoundationOne Heme","precio":116500.0},{"nombre":"Avenio Roche Tisssue","precio":48000.0},{"nombre":"Examen OncoIDX Complete ctDNA","precio":48000.0},{"nombre":"Guardant360 CDx","precio":80270.0},{"nombre":"Guardant360 CDx Expanded","precio":92000.0},{"nombre":"Guardant Health Reveal","precio":83950.0},{"nombre":"Tempus xF","precio":85344.83},{"nombre":"Tempus xF+","precio":85344.83},{"nombre":"Tempus xT","precio":85344.83},{"nombre":"Tempus xT + xR","precio":85344.83},{"nombre":"INVITAE Panel multicancer ","precio":20689.66},{"nombre":"INVITAE Common herditary Cancer","precio":15517.24},{"nombre":"INVITAE Hereditary Breast Cancer STAT Panel","precio":15517.24}],"dra_genoveva":[{"nombre":"FoundationOne CDx","precio":78300.0},{"nombre":"FoundationOne Liquid CDx","precio":78300.0},{"nombre":"FoundationOne Heme","precio":116500.0},{"nombre":"Avenio Roche Tisssue","precio":48000.0},{"nombre":"Examen OncoIDX Complete ctDNA","precio":48000.0},{"nombre":"Guardant360 CDx","precio":80270.0},{"nombre":"Guardant360 CDx Expanded","precio":92000.0},{"nombre":"Guardant Health Reveal","precio":83950.0},{"nombre":"Tempus xF","precio":85344.83},{"nombre":"Tempus xF+","precio":85344.83},{"nombre":"Tempus xT","precio":85344.83},{"nombre":"Tempus xT + xR","precio":85344.83},{"nombre":"INVITAE Panel multicancer ","precio":20689.66},{"nombre":"INVITAE Common herditary Cancer","precio":20689.66},{"nombre":"INVITAE Hereditary Breast Cancer STAT Panel","precio":20689.66}]};
 
@@ -236,6 +276,15 @@ function setupPDF(){
     }
     const usuario = localStorage.getItem("usuarioActual") || "nomad";
     const folio = await getNextFolio();
+    // Guardar en Firestore si está disponible
+    try {
+      if (window.saveCotizacion) {
+        const payload = getCotizacionPayloadNomad(folio);
+        window.saveCotizacion(payload);
+      }
+    } catch (e) {
+      console.warn('No se pudo guardar la cotización en Firebase', e);
+    }
     // Mostrar folio en UI antes de captura
     const folioText = document.getElementById("folioText"); if(folioText) folioText.textContent = folio;
     const nombreArchivo = `Nomad-${paciente}-${fechaEmision}-Folio${folio}.pdf`;

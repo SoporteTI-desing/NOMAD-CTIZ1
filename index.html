@@ -225,6 +225,56 @@
     </section>
   </main>
 
+
+  <!-- Firebase (Cotizador NOMAD) -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+    import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+
+    // 🔧 CONFIGURA AQUÍ TU PROYECTO "Cotizador NOMAD"
+    // Reemplaza los valores por los que aparecen en Configuración del proyecto > Tus aplicaciones > Web
+    const firebaseConfig = {
+      apiKey: "AIzaSyDhtKZlWpHdhFcnVzWovB93bRSVRkC1sDI",
+      authDomain: "cotizador-nomad.firebaseapp.com",
+      projectId: "cotizador-nomad",
+      storageBucket: "cotizador-nomad.firebasestorage.app",
+      messagingSenderId: "736481537624",
+      appId: "1:736481537624:web:6f06667cf34bccc532642d"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    // Iniciar sesión anónima (coincide con tus reglas Firestore)
+    signInAnonymously(auth).catch(console.error);
+
+    async function saveCotizacion(payload){
+      try{
+        const folio = payload.folio || "";
+        const toSave = Object.assign(
+          {
+            folio,
+            marca: "NOMAD",
+            createdAt: serverTimestamp(),
+            origin: location.href,
+            ua: navigator.userAgent
+          },
+          payload
+        );
+
+        await addDoc(collection(db, "cotizaciones"), toSave);
+        console.log("[Firebase] Cotización NOMAD guardada", folio);
+      }catch(e){
+        console.error("[Firebase] Error guardando cotización NOMAD", e);
+      }
+    }
+
+    // Exponer para app.js
+    window.saveCotizacion = saveCotizacion;
+  </script>
+
   <script src="app.js"></script>
 <div class="footer-code">NOG-KAM-FOR-01</div>
 
