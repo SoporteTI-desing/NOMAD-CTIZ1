@@ -225,15 +225,13 @@
     </section>
   </main>
 
-
+  
   <!-- Firebase (Cotizador NOMAD) -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
     import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
     import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 
-    // 🔧 CONFIGURA AQUÍ TU PROYECTO "Cotizador NOMAD"
-    // Reemplaza los valores por los que aparecen en Configuración del proyecto > Tus aplicaciones > Web
     const firebaseConfig = {
       apiKey: "AIzaSyDhtKZlWpHdhFcnVzWovB93bRSVRkC1sDI",
       authDomain: "cotizador-nomad.firebaseapp.com",
