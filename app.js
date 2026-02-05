@@ -253,7 +253,16 @@ function setupBiomarcadores(){
     const opt = sel.selectedOptions[0];
     if(!opt) return;
     const nombre = opt.value;
-    const precio = Number(opt.getAttribute('data-precio')||0);
+    let precio = Number(opt.getAttribute('data-precio')||0);
+
+    // Regla especial: si hay cualquier prueba "Foundation" en la tabla y se agrega este biomarcador,
+    // forzar el precio a $5,000.00 (sin afectar otros rubros)
+    const tieneFoundation = Array.from(document.querySelectorAll('#tablaPruebas tbody tr td:first-child'))
+      .some(td => (td.textContent||'').toLowerCase().includes('foundation'));
+    if(tieneFoundation && (nombre||'').trim().toLowerCase() === 'pdl1 sp263 y 22c3'.toLowerCase()){
+      precio = 5000.00;
+    }
+
     addLinea(nombre, precio, 1);
   });
 }
