@@ -210,10 +210,16 @@ function addLinea(nombre, precio, cant){
     <td>${fmt(precio||0)}</td>
     <td>${fmt(subtotal)} </td>
     <td><button class="btn-eliminar">Eliminar</button></td>`;
-  row.querySelector('.btn-eliminar').addEventListener('click', ()=>{ row.remove(); calcTotales(); });
+  row.querySelector('.btn-eliminar').addEventListener('click', ()=>{ 
+    row.remove(); 
+    calcTotales(); 
+    updateNormalMatchOption();
+  });
   tb.appendChild(row);
   calcTotales();
+  updateNormalMatchOption();
 }
+
 
 function calcTotales(){
   let subtotal = 0;
@@ -243,7 +249,33 @@ function poblarBiomarcadores(){
   if(!sel) return;
   const items = (DATA.biomarcadores||[]);
   sel.innerHTML = items.map(b=>`<option value="${b.nombre}" data-precio="${b.precio||0}">${b.nombre} — ${fmt(b.precio||0)}</option>`).join('');
+  updateNormalMatchOption();
 }
+
+
+function updateNormalMatchOption(){
+  const sel = dom('#selBiomarcador');
+  if(!sel) return;
+
+  const hasTempusXtXr = Array.from(document.querySelectorAll('#tablaPruebas tbody tr td:first-child'))
+    .some(td => (td.textContent||'').replace(/\s+/g,' ').trim().toLowerCase() === 'tempus xt + xr');
+
+  const opts = Array.from(sel.options);
+  const hasOpt = opts.some(o => (o.value||'').trim().toLowerCase() === 'normal match');
+
+  if(hasTempusXtXr && !hasOpt){
+    const opt = document.createElement('option');
+    opt.value = 'NORMAL MATCH';
+    opt.setAttribute('data-precio','0');
+    opt.textContent = `NORMAL MATCH — ${fmt(0)}`;
+    sel.appendChild(opt);
+  }else if(!hasTempusXtXr && hasOpt){
+    opts.forEach(o=>{
+      if((o.value||'').trim().toLowerCase() === 'normal match') o.remove();
+    });
+  }
+}
+
 
 function setupBiomarcadores(){
   const btn = dom('#addBiomarcador');
@@ -261,6 +293,17 @@ function setupBiomarcadores(){
       .some(td => (td.textContent||'').toLowerCase().includes('foundation'));
     if(tieneFoundation && (nombre||'').trim().toLowerCase() === 'pdl1 sp263 y 22c3'.toLowerCase()){
       precio = 5000.00;
+    }
+
+    // Regla especial: NORMAL MATCH solo aplica si está seleccionada la prueba "Tempus xT + xR"
+    const tieneTempusXtXr = Array.from(document.querySelectorAll('#tablaPruebas tbody tr td:first-child'))
+      .some(td => (td.textContent||'').replace(/\s+/g,' ').trim().toLowerCase() === 'tempus xt + xr');
+    if((nombre||'').trim().toLowerCase() === 'normal match'){
+      if(!tieneTempusXtXr){
+        alert('NORMAL MATCH solo aplica para Tempus xT + xR.');
+        return;
+      }
+      precio = 0;
     }
 
     addLinea(nombre, precio, 1);
