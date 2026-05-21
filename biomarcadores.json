@@ -27,6 +27,26 @@
     {
       "nombre": "Biomarcador FOLR1",
       "precio": 3340.0
+    },
+    {
+      "nombre": "CLAUDIN18",
+      "precio": 5937.43
+    },
+    {
+      "nombre": "FLOR1",
+      "precio": 5937.43
+    },
+    {
+      "nombre": "MET",
+      "precio": 5937.43
+    },
+    {
+      "nombre": "MMR",
+      "precio": 5937.43
+    },
+    {
+      "nombre": "PD-L1",
+      "precio": 5937.43
     }
   ],
   "gestion_comercial": [
@@ -57,6 +77,26 @@
     {
       "nombre": "Biomarcador FOLR1",
       "precio": 3340.0
+    },
+    {
+      "nombre": "CLAUDIN18",
+      "precio": 5937.43
+    },
+    {
+      "nombre": "FLOR1",
+      "precio": 5937.43
+    },
+    {
+      "nombre": "MET",
+      "precio": 5937.43
+    },
+    {
+      "nombre": "MMR",
+      "precio": 5937.43
+    },
+    {
+      "nombre": "PD-L1",
+      "precio": 5937.43
     }
   ],
   "gnp": [
@@ -87,6 +127,26 @@
     {
       "nombre": "Biomarcador FOLR1",
       "precio": 3340.0
+    },
+    {
+      "nombre": "CLAUDIN18",
+      "precio": 5937.43
+    },
+    {
+      "nombre": "FLOR1",
+      "precio": 5937.43
+    },
+    {
+      "nombre": "MET",
+      "precio": 5937.43
+    },
+    {
+      "nombre": "MMR",
+      "precio": 5937.43
+    },
+    {
+      "nombre": "PD-L1",
+      "precio": 5937.43
     }
   ],
   "dra_genoveva": [
@@ -117,6 +177,26 @@
     {
       "nombre": "Biomarcador FOLR1",
       "precio": 3340.0
+    },
+    {
+      "nombre": "CLAUDIN18",
+      "precio": 5937.43
+    },
+    {
+      "nombre": "FLOR1",
+      "precio": 5937.43
+    },
+    {
+      "nombre": "MET",
+      "precio": 5937.43
+    },
+    {
+      "nombre": "MMR",
+      "precio": 5937.43
+    },
+    {
+      "nombre": "PD-L1",
+      "precio": 5937.43
     }
   ]
 }
